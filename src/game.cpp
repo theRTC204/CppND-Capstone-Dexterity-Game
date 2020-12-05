@@ -22,7 +22,7 @@ void Game::Run(Renderer &renderer, std::size_t targetFrameDuration)
         // Input, Update, Render - the main game loop.
         // TODO: Handle input
         Update();
-        renderer.Render();
+        renderer.Render(this);
 
         frameEnd = SDL_GetTicks();
 
@@ -57,7 +57,8 @@ void Game::FlipTile(int tile_x, int tile_y)
         return;
     }
 
-    _gameBoard[tile_x][tile_y] = _gameBoard[tile_x][tile_y] == 0 ? 1 : 0;
+    // TODO: Need to mutex the gameBoard
+    gameBoard[tile_x][tile_y] = gameBoard[tile_x][tile_y] == 0 ? 1 : 0;
 }
 
 void Game::CreateGameBoard()
@@ -80,7 +81,8 @@ void Game::CreateGameBoard()
 
             // TODO: Figure out a randomizer for blocking a few spaces!
         }
-        _gameBoard.push_back(column);
+        // TODO: Need to mutex the gameBoard
+        gameBoard.push_back(column);
     }
 }
 

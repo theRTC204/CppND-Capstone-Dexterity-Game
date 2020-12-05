@@ -3,6 +3,10 @@
 
 #include <SDL.h>
 #include <vector>
+#include <memory>
+#include "game.h"
+
+class Game;
 
 class Renderer
 {
@@ -15,7 +19,7 @@ public:
     );
     ~Renderer();
 
-    void Render();
+    void Render(Game *game);
     void UpdateWindowTitle(int fps);
 
 private:

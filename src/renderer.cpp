@@ -45,19 +45,31 @@ Renderer::~Renderer()
     SDL_Quit();
 }
 
-void Renderer::Render()
+void Renderer::Render(Game *game)
 {
-    // The surface contained by the window
-	SDL_Surface* screenSurface = NULL;
+    SDL_Rect block;
+    block.w = _screenWidth / _gridWidth;
+    block.h = _screenHeight / _gridHeight;
 
-    // Get window surface
-    screenSurface = SDL_GetWindowSurface(window);
+    // Clear screen
+    SDL_SetRenderDrawColor(renderer, 0x1E, 0x1E, 0x1E, 0xFF);
+    SDL_RenderClear(renderer);
 
-    // Fill the surface white
-    SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
+    // Render game board
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    // TODO: Need to mutex the gameBoard
+    for (int r = 1; r < game->gameBoard.size() - 2; r++)
+    {
+        for (int c = 1; c < game->gameBoard[r].size() - 2; c++)
+        {
+            block.x = r * block.w;
+            block.y = c * block.h;
+            SDL_RenderFillRect(renderer, &block);
+        }
+    }
 
-    // Update the surface
-    SDL_UpdateWindowSurface(window);
+    // Update Screen
+    SDL_RenderPresent(renderer);
 }
 
 void Renderer::UpdateWindowTitle(int fps)
