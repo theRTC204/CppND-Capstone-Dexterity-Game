@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include "game.h"
 #include "renderer.h"
 
 const int SCREEN_WIDTH = 640;
@@ -13,8 +15,11 @@ int main(int argc, char *argv[])
 	constexpr std::size_t kGridHeight{32};
 
 	Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
+	// TODO: Instantiate the Controller
+	Game game(kGridWidth, kGridHeight);
+	game.Run(renderer, kMsPerFrame);
 
-	renderer.Render();
+	printf("Game has terminated successfully!\n");
 
 	return 0;
 }

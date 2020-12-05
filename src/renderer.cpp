@@ -58,9 +58,6 @@ void Renderer::Render()
 
     // Update the surface
     SDL_UpdateWindowSurface(sdl_window);
-
-    // Wait two seconds
-    SDL_Delay(2000);
 }
 
 void Renderer::UpdateWindowTitle(int fps)
