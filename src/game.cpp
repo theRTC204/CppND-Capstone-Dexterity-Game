@@ -8,7 +8,7 @@ Game::Game(const std::size_t gridWidth, const std::size_t gridHeight) :
     CreateGameBoard();
 }
 
-void Game::Run(Renderer &renderer, std::size_t targetFrameDuration)
+void Game::Run(Controller const &controller, Renderer &renderer, std::size_t targetFrameDuration)
 {
     Uint32 titleTimestamp = SDL_GetTicks();
     Uint32 frameStart;
@@ -22,7 +22,7 @@ void Game::Run(Renderer &renderer, std::size_t targetFrameDuration)
         frameStart = SDL_GetTicks();
 
         // Input, Update, Render - the main game loop.
-        // TODO: Handle input
+        controller.HandleInput(running, player);
         Update();
         renderer.Render(player, this);
 

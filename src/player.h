@@ -6,7 +6,7 @@
 class Player
 {
 public:
-    enum class Direction { kUp, kDown, kLeft, kRight };
+    enum class Direction { kNull, kUp, kDown, kLeft, kRight };
 
     // TODO: Determine how to constrain Player to gameBoard bounds
     Player(int gridWidth, int gridHeight) :
@@ -17,7 +17,7 @@ public:
 
     void Update();
 
-    Direction direction = Direction::kUp;
+    Direction direction = Direction::kNull;
 
     float speed{0.1f};
     bool alive{true};

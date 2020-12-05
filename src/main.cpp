@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "controller.h"
 #include "game.h"
 #include "renderer.h"
 
@@ -12,9 +13,9 @@ int main(int argc, char *argv[])
 	constexpr std::size_t kGridHeight{9};
 
 	Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
-	// TODO: Instantiate the Controller
+	Controller controller;
 	Game game(kGridWidth, kGridHeight);
-	game.Run(renderer, kMsPerFrame);
+	game.Run(controller, renderer, kMsPerFrame);
 
 	printf("Game has terminated successfully!\n");
 

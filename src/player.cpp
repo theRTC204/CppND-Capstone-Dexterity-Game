@@ -19,7 +19,6 @@ void Player::Update()
 
 void Player::UpdatePosition()
 {
-    // TODO: Only move Player while movement key is currently pressed
     switch (direction)
     {
         case Direction::kUp:
