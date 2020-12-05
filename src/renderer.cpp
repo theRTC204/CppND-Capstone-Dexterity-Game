@@ -62,7 +62,6 @@ void Renderer::Render()
 
 void Renderer::UpdateWindowTitle(int fps)
 {
-    char* title;
-    std::sprintf(title, "Dexterity Game (FPS: %s)", std::to_string(fps));
-    SDL_SetWindowTitle(sdl_window, title);
+    std::string title = "Dexterity Game (FPS: " + std::to_string(fps) + ")";
+    SDL_SetWindowTitle(sdl_window, title.c_str());
 }
