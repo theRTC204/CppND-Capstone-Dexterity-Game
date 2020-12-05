@@ -1,7 +1,9 @@
 #include "game.h"
 
 Game::Game(const std::size_t gridWidth, const std::size_t gridHeight) :
-    _gridWidth(gridWidth), _gridHeight(gridHeight)
+    player(gridWidth, gridHeight),
+    _gridWidth(gridWidth),
+    _gridHeight(gridHeight)
 {
     CreateGameBoard();
 }
@@ -22,7 +24,7 @@ void Game::Run(Renderer &renderer, std::size_t targetFrameDuration)
         // Input, Update, Render - the main game loop.
         // TODO: Handle input
         Update();
-        renderer.Render(this);
+        renderer.Render(player, this);
 
         frameEnd = SDL_GetTicks();
 
@@ -88,7 +90,9 @@ void Game::CreateGameBoard()
 
 void Game::Update()
 {
-    // TODO: Check if Player is alive
+    if (!player.alive) return;
 
-    // TODO: Update the Player
+    player.Update();
+
+    // Stretch Goal: Implement some sort of enemy AI
 }

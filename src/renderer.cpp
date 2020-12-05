@@ -45,7 +45,7 @@ Renderer::~Renderer()
     SDL_Quit();
 }
 
-void Renderer::Render(Game *game)
+void Renderer::Render(Player const player, Game const *game)
 {
     SDL_Rect block;
     block.w = _screenWidth / _gridWidth;
@@ -67,6 +67,19 @@ void Renderer::Render(Game *game)
             SDL_RenderFillRect(renderer, &block);
         }
     }
+
+    // Render the Player
+    block.x = static_cast<int>(player.posX) * block.w;
+    block.y = static_cast<int>(player.posY) * block.h;
+    if (player.alive)
+    {
+        SDL_SetRenderDrawColor(renderer, 0x00, 0x7A, 0xCC, 0xFF);
+    }
+    else
+    {
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+    }
+    SDL_RenderFillRect(renderer, &block);
 
     // Update Screen
     SDL_RenderPresent(renderer);

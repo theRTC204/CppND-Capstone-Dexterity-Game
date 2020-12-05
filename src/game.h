@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <vector>
 #include "renderer.h"
+#include "player.h"
 
 class Renderer;
 
@@ -19,6 +20,8 @@ public:
     std::vector<std::vector<int>> gameBoard;
 
 private:
+    Player player;
+
     const std::size_t _gridWidth;
     const std::size_t _gridHeight;
 

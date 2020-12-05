@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include "game.h"
+#include "player.h"
 
 class Game;
 
@@ -19,7 +20,7 @@ public:
     );
     ~Renderer();
 
-    void Render(Game *game);
+    void Render(Player const player, Game const *game);
     void UpdateWindowTitle(int fps);
 
 private:
