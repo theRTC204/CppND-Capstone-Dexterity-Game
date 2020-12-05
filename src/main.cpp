@@ -2,9 +2,6 @@
 #include "game.h"
 #include "renderer.h"
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-
 int main(int argc, char *argv[])
 {
 	constexpr std::size_t kFramesPerSecond{60};
