@@ -8,10 +8,10 @@ class Renderer
 {
 public:
     Renderer(
-        const std::size_t screen_width,
-        const std::size_t screen_height,
-        const std::size_t grid_width,
-        const std::size_t grid_height
+        const std::size_t screenWidth,
+        const std::size_t screenHeight,
+        const std::size_t gridWidth,
+        const std::size_t gridHeight
     );
     ~Renderer();
 
@@ -19,13 +19,13 @@ public:
     void UpdateWindowTitle(int fps);
 
 private:
-    SDL_Window* sdl_window;
-    SDL_Renderer* sdl_renderer;
+    SDL_Window* window;
+    SDL_Renderer* renderer;
 
-    const std::size_t screen_width;
-    const std::size_t screen_height;
-    const std::size_t grid_width;
-    const std::size_t grid_height;
+    const std::size_t _screenWidth;
+    const std::size_t _screenHeight;
+    const std::size_t _gridWidth;
+    const std::size_t _gridHeight;
 };
 
 #endif
