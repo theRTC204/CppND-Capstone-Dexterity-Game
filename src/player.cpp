@@ -1,3 +1,4 @@
+#include <memory>
 #include "player.h"
 
 void Player::Update()
@@ -15,6 +16,12 @@ void Player::Update()
         static_cast<int>(posX),
         static_cast<int>(posY)
     };
+
+    // Update the active tile if the Player has moved to a new cell.
+    if (currentCell.x != prevCell.x || currentCell.y != prevCell.y)
+    {
+        UpdateActiveTile(std::move(currentCell));
+    }
 }
 
 void Player::UpdatePosition()
@@ -34,4 +41,9 @@ void Player::UpdatePosition()
             posX += speed;
             break;
     }
+}
+
+void Player::UpdateActiveTile(SDL_Point &&tile)
+{
+    activeTile = std::move(tile);
 }

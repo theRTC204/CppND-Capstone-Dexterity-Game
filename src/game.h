@@ -7,6 +7,7 @@
 #include "renderer.h"
 #include "player.h"
 
+class Controller;
 class Renderer;
 
 class Game

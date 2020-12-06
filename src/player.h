@@ -23,8 +23,11 @@ public:
     bool alive{true};
     float posX;
     float posY;
+    SDL_Point activeTile;
+
 private:
     void UpdatePosition();
+    void UpdateActiveTile(SDL_Point &&tile);
 
     int _gridWidth;
     int _gridHeight;

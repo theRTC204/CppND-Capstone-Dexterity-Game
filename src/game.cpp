@@ -22,7 +22,7 @@ void Game::Run(Controller const &controller, Renderer &renderer, std::size_t tar
         frameStart = SDL_GetTicks();
 
         // Input, Update, Render - the main game loop.
-        controller.HandleInput(running, player);
+        controller.HandleInput(running, player, (*this));
         Update();
         renderer.Render(player, this);
 

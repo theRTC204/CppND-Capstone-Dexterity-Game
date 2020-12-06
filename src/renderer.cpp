@@ -56,12 +56,20 @@ void Renderer::Render(Player const player, Game const *game)
     SDL_RenderClear(renderer);
 
     // Render game board
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     // TODO: Need to mutex the gameBoard
     for (int r = 1; r < game->gameBoard.size() - 2; r++)
     {
         for (int c = 1; c < game->gameBoard[r].size() - 2; c++)
         {
+            if (game->gameBoard[r][c] == 0)
+            {
+                SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+            }
+            else
+            {
+                SDL_SetRenderDrawColor(renderer, 0x1E, 0x1E, 0x1E, 0xFF);
+            }
+            
             block.x = r * block.w;
             block.y = c * block.h;
             SDL_RenderFillRect(renderer, &block);

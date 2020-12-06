@@ -8,7 +8,12 @@ void Controller::ChangeDirection(Player &player, Player::Direction input) const
     player.direction = input;
 }
 
-void Controller::HandleInput(bool &running, Player &player) const
+void Controller::Activate(Player &player, Game &game) const
+{
+    game.FlipTile(player.activeTile.x, player.activeTile.y);
+}
+
+void Controller::HandleInput(bool &running, Player &player, Game &game) const
 {
     SDL_Event e;
     while (SDL_PollEvent(&e))
@@ -31,6 +36,9 @@ void Controller::HandleInput(bool &running, Player &player) const
                     break;
                 case SDLK_RIGHT:
                     ChangeDirection(player, Player::Direction::kRight);
+                    break;
+                case SDLK_SPACE:
+                    Activate(player, game);
                     break;
             }
         }
