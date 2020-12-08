@@ -16,7 +16,8 @@ public:
     Game(const std::size_t gridWidth, const std::size_t gridHeight);
 
     void Run(Controller const &controller, Renderer &renderer, std::size_t targetFrameDuration);
-    void FlipTile(int tile_x, int tile_y);
+    void FlipSingleTile(SDL_Point &&coords);
+    void FlipChainedTiles(SDL_Point &&coords);
     
     // TODO: Encapsulate this inside a Class with RAII
     std::vector<std::vector<int>> gameBoard;
@@ -27,6 +28,7 @@ private:
     const std::size_t _gridWidth;
     const std::size_t _gridHeight;
 
+    std::vector<SDL_Point> FindBoundingTiles(SDL_Point const &root);
     void CreateGameBoard();
     void Update();
 };

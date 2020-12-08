@@ -51,16 +51,90 @@ void Game::Run(Controller const &controller, Renderer &renderer, std::size_t tar
     }
 }
 
-void Game::FlipTile(int tile_x, int tile_y)
+void Game::FlipSingleTile(SDL_Point &&coords)
 {
-    if (tile_x == 0 || tile_x == _gridWidth || tile_y == 0 || tile_y == _gridHeight)
+    if (coords.x == 0 || coords.x == _gridWidth || coords.y == 0 || coords.y == _gridHeight)
     {
         // Prevent flipping tiles outside gameplay area
         return;
     }
 
     // TODO: Need to mutex the gameBoard
-    gameBoard[tile_x][tile_y] = gameBoard[tile_x][tile_y] == 0 ? 1 : 0;
+    gameBoard[coords.x][coords.y] = gameBoard[coords.x][coords.y] == 0 ? 1 : 0;
+}
+
+void Game::FlipChainedTiles(SDL_Point &&coords)
+{
+    SDL_Point current = SDL_Point(coords);
+    FlipSingleTile(std::move(current));
+
+    std::vector<SDL_Point> connections = FindBoundingTiles(coords);
+    for (auto conn : connections)
+    {
+        for (int i = coords.x - 1; i > conn.x; i--)
+        {
+            SDL_Point tile{i, coords.y};
+            FlipSingleTile(std::move(tile));
+        }
+        for (int i = coords.y - 1; i > conn.y; i--)
+        {
+            SDL_Point tile{coords.x, i};
+            FlipSingleTile(std::move(tile));
+        }
+        for (int i = coords.x + 1; i < conn.x; i++)
+        {
+            SDL_Point tile{i, coords.y};
+            FlipSingleTile(std::move(tile));
+        }
+        for (int i = coords.y + 1; i < conn.y; i++)
+        {
+            SDL_Point tile{coords.x, i};
+            FlipSingleTile(std::move(tile));
+        }
+    }
+}
+
+std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
+{
+    std::vector<SDL_Point> connections;
+
+    for (int i = root.x - 1; i >= 1; i--)
+    {
+        if (gameBoard[i][root.y] == 1)
+        {
+            connections.emplace_back(SDL_Point{i, root.y});
+            break;
+        }
+    }
+
+    for (int i = root.y - 1; i >= 1; i--)
+    {
+        if (gameBoard[root.x][i] == 1)
+        {
+            connections.emplace_back(SDL_Point{root.x, i});
+            break;
+        }
+    }
+
+    for (int i = root.x + 1; i <= _gridWidth - 1; i++)
+    {
+        if (gameBoard[i][root.y] == 1)
+        {
+            connections.emplace_back(SDL_Point{i, root.y});
+            break;
+        }
+    }
+
+    for (int i = root.y + 1; i <= _gridHeight - 1; i++)
+    {
+        if (gameBoard[root.x][i] == 1)
+        {
+            connections.emplace_back(SDL_Point{root.x, i});
+            break;
+        }
+    }
+
+    return connections;
 }
 
 void Game::CreateGameBoard()

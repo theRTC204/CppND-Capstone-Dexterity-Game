@@ -10,7 +10,8 @@ void Controller::ChangeDirection(Player &player, Player::Direction input) const
 
 void Controller::Activate(Player &player, Game &game) const
 {
-    game.FlipTile(player.activeTile.x, player.activeTile.y);
+    SDL_Point coords{player.activeTile.x, player.activeTile.y};
+    game.FlipChainedTiles(std::move(coords));
 }
 
 void Controller::HandleInput(bool &running, Player &player, Game &game) const
