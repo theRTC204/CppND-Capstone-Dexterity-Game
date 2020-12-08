@@ -123,7 +123,7 @@ std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
 
     for (int i = root.x + 1; i <= _gridWidth - 1; i++)
     {
-        if (gameBoard[i][root.x] == -1)
+        if (gameBoard[i][root.y] == -1)
             break; // Bail out if we hit a blocked tile!
         if (gameBoard[i][root.y] == 1)
         {
