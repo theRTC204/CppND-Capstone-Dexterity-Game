@@ -53,9 +53,10 @@ void Game::Run(Controller const &controller, Renderer &renderer, std::size_t tar
 
 void Game::FlipSingleTile(SDL_Point &&coords)
 {
-    if (coords.x == 0 || coords.x == _gridWidth || coords.y == 0 || coords.y == _gridHeight)
+    if (gameBoard[coords.x][coords.y] == -1)
     {
         // Prevent flipping tiles outside gameplay area
+        // or tiles marked as blocked
         return;
     }
 
