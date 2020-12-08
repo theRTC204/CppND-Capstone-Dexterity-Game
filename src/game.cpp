@@ -101,6 +101,8 @@ std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
 
     for (int i = root.x - 1; i >= 1; i--)
     {
+        if (gameBoard[i][root.y] == -1)
+            break; // Bail out if we hit a blocked tile!
         if (gameBoard[i][root.y] == 1)
         {
             connections.emplace_back(SDL_Point{i, root.y});
@@ -110,6 +112,8 @@ std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
 
     for (int i = root.y - 1; i >= 1; i--)
     {
+        if (gameBoard[root.x][i] == -1)
+            break; // Bail out if we hit a blocked tile!
         if (gameBoard[root.x][i] == 1)
         {
             connections.emplace_back(SDL_Point{root.x, i});
@@ -119,6 +123,8 @@ std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
 
     for (int i = root.x + 1; i <= _gridWidth - 1; i++)
     {
+        if (gameBoard[i][root.x] == -1)
+            break; // Bail out if we hit a blocked tile!
         if (gameBoard[i][root.y] == 1)
         {
             connections.emplace_back(SDL_Point{i, root.y});
@@ -128,6 +134,8 @@ std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
 
     for (int i = root.y + 1; i <= _gridHeight - 1; i++)
     {
+        if (gameBoard[root.x][i] == -1)
+            break; // Bail out if we hit a blocked tile!
         if (gameBoard[root.x][i] == 1)
         {
             connections.emplace_back(SDL_Point{root.x, i});
