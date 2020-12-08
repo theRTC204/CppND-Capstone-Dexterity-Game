@@ -3,6 +3,9 @@
 
 #include <SDL.h>
 #include <vector>
+#include <random>
+#include <chrono>
+#include <thread>
 #include "controller.h"
 #include "renderer.h"
 #include "player.h"
@@ -29,6 +32,8 @@ private:
     const std::size_t _gridHeight;
 
     std::vector<SDL_Point> FindBoundingTiles(SDL_Point const &root);
+    SDL_Point SelectRandomTile();
+    int RandomIntFromRange(int low, int high);
     void CreateGameBoard();
     void Update();
 };
