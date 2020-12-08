@@ -65,9 +65,13 @@ void Renderer::Render(Player const player, Game const *game)
             {
                 SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
             }
-            else
+            else if (game->gameBoard[r][c] == -1)
             {
                 SDL_SetRenderDrawColor(renderer, 0x1E, 0x1E, 0x1E, 0xFF);
+            }
+            else
+            {
+                SDL_SetRenderDrawColor(renderer, 0x00, 0x5B, 0x98, 0xFF);
             }
             
             block.x = r * block.w;
