@@ -5,8 +5,10 @@
 #include <vector>
 #include <random>
 #include <chrono>
+#include <memory>
 #include <thread>
 #include "controller.h"
+#include "gameboard.h"
 #include "renderer.h"
 #include "player.h"
 
@@ -22,8 +24,7 @@ public:
     void FlipSingleTile(SDL_Point &&coords);
     void FlipChainedTiles(SDL_Point &&coords);
     
-    // TODO: Encapsulate this inside a Class with RAII
-    std::vector<std::vector<int>> gameBoard;
+    std::shared_ptr<GameBoard> gameBoard;
 
 private:
     Player player;
@@ -32,9 +33,6 @@ private:
     const std::size_t _gridHeight;
 
     std::vector<SDL_Point> FindBoundingTiles(SDL_Point const &root);
-    SDL_Point SelectRandomTile();
-    int RandomIntFromRange(int low, int high);
-    void CreateGameBoard();
     void Update();
 };
 

@@ -57,15 +57,16 @@ void Renderer::Render(Player const player, Game const *game)
 
     // Render game board
     // TODO: Need to mutex the gameBoard
-    for (int r = 1; r < game->gameBoard.size() - 2; r++)
+    const std::vector<std::vector<int>> board = game->gameBoard->GetBoard();
+    for (int r = 1; r < board.size() - 2; r++)
     {
-        for (int c = 1; c < game->gameBoard[r].size() - 2; c++)
+        for (int c = 1; c < board[r].size() - 2; c++)
         {
-            if (game->gameBoard[r][c] == 0)
+            if (board[r][c] == 0)
             {
                 SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
             }
-            else if (game->gameBoard[r][c] == -1)
+            else if (board[r][c] == -1)
             {
                 SDL_SetRenderDrawColor(renderer, 0x1E, 0x1E, 0x1E, 0xFF);
             }

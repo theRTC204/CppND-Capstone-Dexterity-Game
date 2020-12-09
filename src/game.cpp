@@ -2,11 +2,9 @@
 
 Game::Game(const std::size_t gridWidth, const std::size_t gridHeight) :
     player(gridWidth, gridHeight),
+    gameBoard(std::make_shared<GameBoard>(gridWidth, gridHeight)),
     _gridWidth(gridWidth),
-    _gridHeight(gridHeight)
-{
-    CreateGameBoard();
-}
+    _gridHeight(gridHeight) { }
 
 void Game::Run(Controller const &controller, Renderer &renderer, std::size_t targetFrameDuration)
 {
@@ -53,7 +51,7 @@ void Game::Run(Controller const &controller, Renderer &renderer, std::size_t tar
 
 void Game::FlipSingleTile(SDL_Point &&coords)
 {
-    if (gameBoard[coords.x][coords.y] == -1)
+    if (gameBoard->GetTileState(coords) == -1)
     {
         // Prevent flipping tiles outside gameplay area
         // or tiles marked as blocked
@@ -61,7 +59,8 @@ void Game::FlipSingleTile(SDL_Point &&coords)
     }
 
     // TODO: Need to mutex the gameBoard
-    gameBoard[coords.x][coords.y] = gameBoard[coords.x][coords.y] == 0 ? 1 : 0;
+    int newState = gameBoard->GetTileState(coords) == 0 ? 1 : 0;
+    gameBoard->SetTileState(coords, newState);
 }
 
 void Game::FlipChainedTiles(SDL_Point &&coords)
@@ -101,108 +100,61 @@ std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
 
     for (int i = root.x - 1; i >= 1; i--)
     {
-        if (gameBoard[i][root.y] == -1)
+        SDL_Point tile{i, root.y};
+        int tileState = gameBoard->GetTileState(tile);
+
+        if (tileState == -1)
             break; // Bail out if we hit a blocked tile!
-        if (gameBoard[i][root.y] == 1)
+        if (tileState == 1)
         {
-            connections.emplace_back(SDL_Point{i, root.y});
+            connections.push_back(tile);
             break;
         }
     }
 
     for (int i = root.y - 1; i >= 1; i--)
     {
-        if (gameBoard[root.x][i] == -1)
+        SDL_Point tile{root.x, i};
+        int tileState = gameBoard->GetTileState(tile);
+
+        if (tileState == -1)
             break; // Bail out if we hit a blocked tile!
-        if (gameBoard[root.x][i] == 1)
+        if (tileState == 1)
         {
-            connections.emplace_back(SDL_Point{root.x, i});
+            connections.push_back(tile);
             break;
         }
     }
 
     for (int i = root.x + 1; i <= _gridWidth - 1; i++)
     {
-        if (gameBoard[i][root.y] == -1)
+        SDL_Point tile{i, root.y};
+        int tileState = gameBoard->GetTileState(tile);
+
+        if (tileState == -1)
             break; // Bail out if we hit a blocked tile!
-        if (gameBoard[i][root.y] == 1)
+        if (tileState == 1)
         {
-            connections.emplace_back(SDL_Point{i, root.y});
+            connections.push_back(tile);
             break;
         }
     }
 
     for (int i = root.y + 1; i <= _gridHeight - 1; i++)
     {
-        if (gameBoard[root.x][i] == -1)
+        SDL_Point tile{root.x, i};
+        int tileState = gameBoard->GetTileState(tile);
+
+        if (tileState == -1)
             break; // Bail out if we hit a blocked tile!
-        if (gameBoard[root.x][i] == 1)
+        if (tileState == 1)
         {
-            connections.emplace_back(SDL_Point{root.x, i});
+            connections.push_back(tile);
             break;
         }
     }
 
     return connections;
-}
-
-SDL_Point Game::SelectRandomTile()
-{
-    return SDL_Point{
-        RandomIntFromRange(1, _gridWidth - 1),
-        RandomIntFromRange(1, _gridHeight - 1)
-    };
-}
-
-int Game::RandomIntFromRange(int low, int high)
-{
-    // Generate a random number using system clock as a seed
-    // This ensure that successive runs generate truly random values
-    // This method was adapted from: http://www.cplusplus.com/reference/random/uniform_int_distribution/operator()
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine gen(seed);
-    std::uniform_int_distribution<int> distrib(1, 6);
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(1)); // Ensure next run generates another number
-
-    return distrib(gen);
-}
-
-void Game::CreateGameBoard()
-{
-    for (int w = 0; w <= _gridWidth; w++)
-    {
-        std::vector<int> column{};
-        for (int h = 0; h <= _gridHeight; h++)
-        {
-            if (w == 0 || h == 0 || w == _gridWidth || h == _gridHeight)
-            {
-                // The outer edges are not playable!
-                column.push_back(-1);
-            }
-            else
-            {
-                // Initialize all grid coordinates as open!
-                column.push_back(0);
-            }
-        }
-        // TODO: Need to mutex the gameBoard
-        gameBoard.push_back(column);
-    }
-
-    // Randomizer for blocking a few spaces!
-    int blockedCount = 0;
-    do
-    {
-        SDL_Point blockedTile = SelectRandomTile();
-        if (blockedTile.x == _gridWidth / 2 && blockedTile.y == _gridHeight / 2)
-        {
-            // Ensure the Player start location is never a blocked tile
-            continue;
-        }
-        gameBoard[blockedTile.x][blockedTile.y] = -1;
-        blockedCount++;
-    } while (blockedCount < 2);
 }
 
 void Game::Update()
