@@ -24,6 +24,7 @@ public:
     void FlipSingleTile(SDL_Point &&coords);
     void FlipChainedTiles(SDL_Point &&coords);
     
+    bool playerWins;
     std::shared_ptr<GameBoard> gameBoard;
 
 private:
@@ -33,6 +34,7 @@ private:
     const std::size_t _gridHeight;
 
     std::vector<SDL_Point> FindBoundingTiles(SDL_Point const &root);
+    bool CheckWinCondition();
     void Update();
 };
 

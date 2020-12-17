@@ -157,9 +157,30 @@ std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
     return connections;
 }
 
+bool Game::CheckWinCondition()
+{
+    for (int r = 1; r < _gridHeight - 2; r++)
+    {
+        for (int c = 1; c < _gridWidth - 2; c++)
+        {
+            SDL_Point tile{r, c};
+            if (gameBoard->GetTileState(tile) == 0) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 void Game::Update()
 {
     if (!player.alive) return;
+
+    playerWins = CheckWinCondition();
+    if (playerWins)
+    {
+        return;
+    }
 
     player.Update();
 

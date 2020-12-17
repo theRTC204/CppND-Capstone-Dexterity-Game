@@ -62,7 +62,11 @@ void Renderer::Render(Player const player, Game const *game)
     {
         for (int c = 1; c < board[r].size() - 2; c++)
         {
-            if (board[r][c] == 0)
+            if (game->playerWins)
+            {
+                SDL_SetRenderDrawColor(renderer, 0x84, 0xCE, 0x00, 0xFF);
+            }
+            else if (board[r][c] == 0)
             {
                 SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
             }
