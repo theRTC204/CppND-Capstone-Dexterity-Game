@@ -16,8 +16,7 @@ public:
         posY(gridHeight / 2) {}
 
     void Update();
-
-    Direction direction = Direction::kNull;
+    void SetDirection(Direction direction);
 
     float speed{0.1f};
     bool alive{true};
@@ -28,6 +27,8 @@ public:
 private:
     void UpdatePosition();
     void UpdateActiveTile(SDL_Point &&tile);
+
+    Direction _direction = Direction::kNull;
 
     int _gridWidth;
     int _gridHeight;

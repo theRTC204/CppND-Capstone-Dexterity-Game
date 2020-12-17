@@ -5,7 +5,7 @@
 
 void Controller::ChangeDirection(Player &player, Player::Direction input) const
 {
-    player.direction = input;
+    player.SetDirection(input);
 }
 
 void Controller::Activate(Player &player, Game &game) const

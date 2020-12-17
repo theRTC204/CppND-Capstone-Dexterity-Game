@@ -26,7 +26,7 @@ void Player::Update()
 
 void Player::UpdatePosition()
 {
-    switch (direction)
+    switch (_direction)
     {
         case Direction::kUp:
             posY -= speed;
