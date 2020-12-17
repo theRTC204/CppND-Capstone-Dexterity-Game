@@ -24,6 +24,11 @@ void Player::Update()
     }
 }
 
+void Player::SetDirection(Direction direction)
+{
+    _direction = direction;
+}
+
 void Player::UpdatePosition()
 {
     switch (_direction)
