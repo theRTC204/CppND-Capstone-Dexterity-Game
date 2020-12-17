@@ -27,6 +27,29 @@ Some aspects of the code were adapted from [this sample project](https://github.
 3. Compile: `cmake .. && make`
 4. Run it: `./DexterityGame`.
 
+## File & Class Structure
+
+```
+├─── build
+├─── src
+|    ├─── controller.cpp
+|    ├─── controller.h
+|    ├─── game.cpp
+|    ├─── game.h
+|    ├─── gameboard.cpp
+|    ├─── gameboard.h
+|    ├─── main.cpp
+|    ├─── player.cpp
+|    ├─── player.h
+|    ├─── renderer.cpp
+|    └─── renderer.h
+├─── CMakeLists.txt
+├─── code_structure.png
+└─── README.md
+```
+
+<img src="code_structure.png" />
+
 ## Rubric Points
 
 ### README
