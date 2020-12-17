@@ -45,7 +45,7 @@ Renderer::~Renderer()
     SDL_Quit();
 }
 
-void Renderer::Render(Player const player, Game const *game)
+void Renderer::Render(Player const player, Game const &game)
 {
     SDL_Rect block;
     block.w = _screenWidth / _gridWidth;
@@ -57,12 +57,12 @@ void Renderer::Render(Player const player, Game const *game)
 
     // Render game board
     // TODO: Need to mutex the gameBoard
-    const std::vector<std::vector<int>> board = game->gameBoard->GetBoard();
+    const std::vector<std::vector<int>> board = game.gameBoard->GetBoard();
     for (int r = 1; r < board.size() - 2; r++)
     {
         for (int c = 1; c < board[r].size() - 2; c++)
         {
-            if (game->playerWins)
+            if (game.playerWins)
             {
                 SDL_SetRenderDrawColor(renderer, 0x84, 0xCE, 0x00, 0xFF);
             }
