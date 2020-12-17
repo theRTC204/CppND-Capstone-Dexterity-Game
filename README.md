@@ -45,7 +45,7 @@ Some aspects of the code were adapted from [this sample project](https://github.
 
 :white_check_mark: The project accepts user input and processes the input
 
-- The `Controller::HandleInput()` method in `src/controller.cpp` accepts user input to control the character through `WASD` or `Arrow` keys, and allows the player to interact with a tile on the game board through `Space` or `E` keys.
+- The `Controller::HandleInput()` method in `src/controller.cpp` starting at line 17 accepts user input to control the character through `WASD` or `Arrow` keys, and allows the player to interact with a tile on the game board through `Space` or `E` keys.
 
 ### Object Oriented Programming
 
@@ -66,14 +66,14 @@ Some aspects of the code were adapted from [this sample project](https://github.
 
 :white_check_mark: The project makes use of references in function declarations
 
-- The method `GameBoard::GetTileState()` defined in `src/gameboard.h` accepts a reference to an `SDL_Point` object as its only argument
-- The method `GameBoard::SetTileState()` defined in `src/gameboard.h` accepts a reference to an `SDL_Point` object as one of its arguments
-- The method `Controller::ChangeDirection()` defined in `src/controller.h` accepts a reference to a `Player` object as one of its arguments
-- The method `Controller::Active()` defined in `src/controller.h` accepts a reference to a `Player` object and `Game` object as its two arguments.
+- The method `GameBoard::GetTileState()` defined in `src/gameboard.h` at line 15 accepts a reference to an `SDL_Point` object as its only argument
+- The method `GameBoard::SetTileState()` defined in `src/gameboard.h` at line 16 accepts a reference to an `SDL_Point` object as one of its arguments
+- The method `Controller::ChangeDirection()` defined in `src/controller.h` at line 15 accepts a reference to a `Player` object as one of its arguments
+- The method `Controller::Active()` defined in `src/controller.h` at line 16 accepts a reference to a `Player` object and `Game` object as its two arguments.
 
 :white_check_mark: The project uses smart pointers instead of raw pointers
 
-- The `Game` class defined in `src/game.h` uses a `std::shared_ptr<GameBoard>` for referencing the member `GameBoard` class instance.
+- The `Game` class defined in `src/game.h` uses a `std::shared_ptr<GameBoard>` at line 28 for referencing the member `GameBoard` class instance.
 
 ### Concurrency
 
