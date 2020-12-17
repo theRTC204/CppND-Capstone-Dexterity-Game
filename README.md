@@ -50,6 +50,26 @@ Some aspects of the code were adapted from [this sample project](https://github.
 
 <img src="code_structure.png" />
 
+## Expected Behavior
+
+### Gameplay
+
+The objective of the game is to "flip" every tile on the game board to your Player (blue square) color.
+
+When the Player uses their `Activate` ability, the tile they are standing on will flip colors; if open (white) it becomes closed (blue), or vice versa.
+
+Tiles may be flipped in a chain if the row or column makes a connection to an already claimed tile.
+
+Each game session will randomly block out two tiles in the middle of the game board; these blocked tiles will interupt chained tile flipping.
+
+### Controls
+
+  Move Up, `W` or `Up`  
+  Move Down, `S` or `Down`  
+  Move Left, `A` or `Left`  
+  Move Right, `D` or `Right`  
+  Activate, `E` or `Space`  
+
 ## Rubric Points
 
 ### README
