@@ -49,7 +49,7 @@ void Game::Run(Controller const &controller, Renderer &renderer, std::size_t tar
     }
 }
 
-void Game::FlipSingleTile(SDL_Point &&coords)
+void Game::FlipSingleTile(SDL_Point &&coords, int sleepMultiplier)
 {
     if (gameBoard->GetTileState(coords) == -1)
     {
@@ -58,6 +58,8 @@ void Game::FlipSingleTile(SDL_Point &&coords)
         return;
     }
 
+    std::this_thread::sleep_for(std::chrono::milliseconds(250 * sleepMultiplier));
+
     // TODO: Need to mutex the gameBoard
     int newState = gameBoard->GetTileState(coords) == 0 ? 1 : 0;
     gameBoard->SetTileState(coords, newState);
@@ -65,32 +67,51 @@ void Game::FlipSingleTile(SDL_Point &&coords)
 
 void Game::FlipChainedTiles(SDL_Point &&coords)
 {
+    int sleepMultiplier = 0;
+    std::vector<std::thread> threads;
+    
     SDL_Point current = SDL_Point(coords);
-    FlipSingleTile(std::move(current));
+    threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(current), sleepMultiplier));
 
     std::vector<SDL_Point> connections = FindBoundingTiles(coords);
     for (auto conn : connections)
     {
+        sleepMultiplier = 0;
         for (int i = coords.x - 1; i > conn.x; i--)
         {
             SDL_Point tile{i, coords.y};
-            FlipSingleTile(std::move(tile));
+            threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(tile), sleepMultiplier));
+            sleepMultiplier++;
         }
+
+        sleepMultiplier = 0;
         for (int i = coords.y - 1; i > conn.y; i--)
         {
             SDL_Point tile{coords.x, i};
-            FlipSingleTile(std::move(tile));
+            threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(tile), sleepMultiplier));
+            sleepMultiplier++;
         }
+
+        sleepMultiplier = 0;
         for (int i = coords.x + 1; i < conn.x; i++)
         {
             SDL_Point tile{i, coords.y};
-            FlipSingleTile(std::move(tile));
+            threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(tile), sleepMultiplier));
+            sleepMultiplier++;
         }
+
+        sleepMultiplier = 0;
         for (int i = coords.y + 1; i < conn.y; i++)
         {
             SDL_Point tile{coords.x, i};
-            FlipSingleTile(std::move(tile));
+            threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(tile), sleepMultiplier));
+            sleepMultiplier++;
         }
+    }
+
+    for (auto &thread : threads)
+    {
+        thread.detach();
     }
 }
 

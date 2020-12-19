@@ -21,7 +21,7 @@ public:
     Game(const std::size_t gridWidth, const std::size_t gridHeight);
 
     void Run(Controller const &controller, Renderer &renderer, std::size_t targetFrameDuration);
-    void FlipSingleTile(SDL_Point &&coords);
+    void FlipSingleTile(SDL_Point &&coords, int sleepMultiplier);
     void FlipChainedTiles(SDL_Point &&coords);
     
     bool playerWins;
