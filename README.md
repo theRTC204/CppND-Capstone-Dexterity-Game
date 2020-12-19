@@ -131,4 +131,10 @@ Each game session will randomly block out two tiles in the middle of the game bo
 
 :black_square_button: A mutex or lock is used in the project
 
+- The `GameBoard` class uses a `std::mutex` to make mutations of the game board vector thread safe.
+  - The method `GameBoard::GetTileState` implemented in `src/gameboard.cpp` at line 51 uses a `std::lock_guard` to ensure the `_board` vector is not mutated while returning the specific tile state
+  - The method `GameBoard::SetTileState` implemented in `src/gameboard.cpp` at line 57 uses a `std::lock_guard` to ensure the `_board` vector is not mutated while setting the specific tile state
+  - The method `GameBoard::GetBoard` implemented in `src/gameboard.cpp` at line 71 uses a `std::lock_guard` to ensure the `_board` vector is not mutated while it is being returned.
+  - The method `GameBoard::Generate` implemented in `src/gameboard.cpp` at line 10 initializes a `std::unique_lock` with its deferred constructor, which is later used at lines 29-31 and lines 44-46 to ensure the `_board` vector is not mutated while setting the initial game board state (though impossible in the current game code, this was done to prepare for a future case where the board may be regenerated in subsequent game turns, which may result in background threads still existing at time of regeneration).
+
 :black_square_button: A condition variable is used in the project
