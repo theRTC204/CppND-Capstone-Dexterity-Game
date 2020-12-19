@@ -56,7 +56,6 @@ void Renderer::Render(Player const player, Game const &game)
     SDL_RenderClear(renderer);
 
     // Render game board
-    // TODO: Need to mutex the gameBoard
     const std::vector<std::vector<int>> board = game.gameBoard->GetBoard();
     for (int r = 1; r < board.size() - 2; r++)
     {

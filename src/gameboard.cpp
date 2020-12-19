@@ -9,6 +9,7 @@ GameBoard::GameBoard(int gridWidth, int gridHeight) :
 
 void GameBoard::Generate()
 {
+    std::unique_lock<std::mutex> lck(_mtx, std::defer_lock);
     for (int w = 0; w <= _gridWidth; w++)
     {
         std::vector<int> column{};
@@ -25,8 +26,9 @@ void GameBoard::Generate()
                 column.push_back(0);
             }
         }
-        // TODO: Need to mutex the gameBoard
+        lck.lock();
         _board.push_back(column);
+        lck.unlock();
     }
 
     // Randomizer for blocking a few spaces!
@@ -39,18 +41,22 @@ void GameBoard::Generate()
             // Ensure the Player start location is never a blocked tile
             continue;
         }
+        lck.lock();
         _board[blockedTile.x][blockedTile.y] = -1;
+        lck.unlock();
         blockedCount++;
     } while (blockedCount < 2);
 }
 
 int GameBoard::GetTileState(SDL_Point &coords)
 {
+    std::lock_guard<std::mutex> lck(_mtx);
     return _board[coords.x][coords.y];
 }
 
 void GameBoard::SetTileState(SDL_Point &coords, int state)
 {
+    std::lock_guard<std::mutex> lck(_mtx);
     _board[coords.x][coords.y] = state;
 }
 
@@ -64,6 +70,7 @@ SDL_Point GameBoard::SelectRandomTile()
 
 std::vector<std::vector<int>> GameBoard::GetBoard()
 {
+    std::lock_guard<std::mutex> lck(_mtx);
     return _board;
 }
 

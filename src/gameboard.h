@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <chrono>
+#include <mutex>
 #include <random>
 #include <thread>
 #include <vector>
@@ -22,6 +23,7 @@ private:
     SDL_Point SelectRandomTile();
     int RandomIntFromRange(int low, int high);
 
+    std::mutex _mtx;
     std::vector<std::vector<int>> _board;
     int _gridWidth;
     int _gridHeight;

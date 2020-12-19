@@ -61,7 +61,6 @@ void Game::FlipSingleTile(SDL_Point &&coords, int sleepMultiplier)
 
     std::this_thread::sleep_for(std::chrono::milliseconds(250 * sleepMultiplier));
 
-    // TODO: Need to mutex the gameBoard
     int newState = gameBoard->GetTileState(coords) == 0 ? 1 : 0;
     gameBoard->SetTileState(coords, newState);
 }
