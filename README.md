@@ -122,7 +122,12 @@ Each game session will randomly block out two tiles in the middle of the game bo
 
 ### Concurrency
 
-:black_square_button: The project uses multithreading
+:white_check_mark: The project uses multithreading
+
+- The method `Game::FlipChainedTiles` defined in `src/game.h` at line 24 and implemented in `src/game.cpp` at line 69 creates a `std::vector<std::thread>` for each tile that will be flipped.
+  - Threads are started with a variadic template with a `std::shared_ptr` reference to the instance of `Game` to ensure the object is kept until all threads are completed
+  - Each thread sleeps for progressively longer points of time to simulate the effect of the tiles flipping one after another in a chain (each row/column chain starts at a delay of 0ms).
+  - All threads are detachs so as to not to hault the game
 
 :black_square_button: A mutex or lock is used in the project
 
