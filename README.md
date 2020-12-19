@@ -80,7 +80,7 @@ Each game session will randomly block out two tiles in the middle of the game bo
 
 :white_check_mark: The README indicates which project is chosen
 
-:white_square_button: The README includes information about each rubric point addressed
+:white_check_mark: The README includes information about each rubric point addressed
 
 ### Compiling and Testing
 
@@ -111,30 +111,29 @@ Each game session will randomly block out two tiles in the middle of the game bo
 
 :white_check_mark: The project makes use of references in function declarations
 
-- The method `GameBoard::GetTileState()` defined in `src/gameboard.h` at line 15 accepts a reference to an `SDL_Point` object as its only argument
-- The method `GameBoard::SetTileState()` defined in `src/gameboard.h` at line 16 accepts a reference to an `SDL_Point` object as one of its arguments
+- The method `GameBoard::GetTileState()` defined in `src/gameboard.h` at line 16 accepts a reference to an `SDL_Point` object as its only argument
+- The method `GameBoard::SetTileState()` defined in `src/gameboard.h` at line 17 accepts a reference to an `SDL_Point` object as one of its arguments
 - The method `Controller::ChangeDirection()` defined in `src/controller.h` at line 15 accepts a reference to a `Player` object as one of its arguments
-- The method `Controller::Active()` defined in `src/controller.h` at line 16 accepts a reference to a `Player` object and `Game` object as its two arguments.
+- The method `Controller::Active()` defined in `src/controller.h` at line 16 accepts a reference to a `Player` object as one of its arguments.
 
 :white_check_mark: The project uses smart pointers instead of raw pointers
 
 - The `Game` class defined in `src/game.h` uses a `std::shared_ptr<GameBoard>` at line 28 for referencing the member `GameBoard` class instance.
+- The `Game` class defined in `src/game.h` uses a `std::shared_ptr<Game>` at line 36 for passing references of itself to other classes, threads or methods.
 
 ### Concurrency
 
 :white_check_mark: The project uses multithreading
 
-- The method `Game::FlipChainedTiles` defined in `src/game.h` at line 24 and implemented in `src/game.cpp` at line 69 creates a `std::vector<std::thread>` for each tile that will be flipped.
+- The method `Game::FlipChainedTiles` defined in `src/game.h` at line 25 and implemented in `src/game.cpp` at line 68 creates a `std::vector<std::thread>` for each tile that will be flipped.
   - Threads are started with a variadic template with a `std::shared_ptr` reference to the instance of `Game` to ensure the object is kept until all threads are completed
   - Each thread sleeps for progressively longer points of time to simulate the effect of the tiles flipping one after another in a chain (each row/column chain starts at a delay of 0ms).
   - All threads are detachs so as to not to hault the game
 
-:black_square_button: A mutex or lock is used in the project
+:white_check_mark: A mutex or lock is used in the project
 
 - The `GameBoard` class uses a `std::mutex` to make mutations of the game board vector thread safe.
   - The method `GameBoard::GetTileState` implemented in `src/gameboard.cpp` at line 51 uses a `std::lock_guard` to ensure the `_board` vector is not mutated while returning the specific tile state
   - The method `GameBoard::SetTileState` implemented in `src/gameboard.cpp` at line 57 uses a `std::lock_guard` to ensure the `_board` vector is not mutated while setting the specific tile state
   - The method `GameBoard::GetBoard` implemented in `src/gameboard.cpp` at line 71 uses a `std::lock_guard` to ensure the `_board` vector is not mutated while it is being returned.
-  - The method `GameBoard::Generate` implemented in `src/gameboard.cpp` at line 10 initializes a `std::unique_lock` with its deferred constructor, which is later used at lines 29-31 and lines 44-46 to ensure the `_board` vector is not mutated while setting the initial game board state (though impossible in the current game code, this was done to prepare for a future case where the board may be regenerated in subsequent game turns, which may result in background threads still existing at time of regeneration).
-
-:black_square_button: A condition variable is used in the project
+  - The method `GameBoard::Generate` implemented in `src/gameboard.cpp` at line 10 initializes a `std::unique_lock` with its deferred constructor, which is later used at lines 29-31 and at lines 44-46 to ensure the `_board` vector is not mutated while setting the initial game board state (though impossible in the current game code, this was done to prepare for a future case where the board may be regenerated in subsequent game turns, which may result in background threads still existing at time of regeneration).
