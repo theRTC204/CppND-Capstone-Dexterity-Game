@@ -4,7 +4,8 @@ Game::Game(const std::size_t gridWidth, const std::size_t gridHeight) :
     player(gridWidth, gridHeight),
     gameBoard(std::make_shared<GameBoard>(gridWidth, gridHeight)),
     _gridWidth(gridWidth),
-    _gridHeight(gridHeight) { }
+    _gridHeight(gridHeight),
+    _self(this) { }
 
 void Game::Run(Controller const &controller, Renderer &renderer, std::size_t targetFrameDuration)
 {
@@ -71,40 +72,44 @@ void Game::FlipChainedTiles(SDL_Point &&coords)
     std::vector<std::thread> threads;
     
     SDL_Point current = SDL_Point(coords);
-    threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(current), sleepMultiplier));
+    threads.emplace_back(std::thread(&Game::FlipSingleTile, _self, std::move(current), sleepMultiplier));
 
     std::vector<SDL_Point> connections = FindBoundingTiles(coords);
     for (auto conn : connections)
     {
+        // Reset the sleep multiplier for a new row/column
         sleepMultiplier = 0;
         for (int i = coords.x - 1; i > conn.x; i--)
         {
             SDL_Point tile{i, coords.y};
-            threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(tile), sleepMultiplier));
+            threads.emplace_back(std::thread(&Game::FlipSingleTile, _self, std::move(tile), sleepMultiplier));
             sleepMultiplier++;
         }
 
+        // Reset the sleep multiplier for a new row/column
         sleepMultiplier = 0;
         for (int i = coords.y - 1; i > conn.y; i--)
         {
             SDL_Point tile{coords.x, i};
-            threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(tile), sleepMultiplier));
+            threads.emplace_back(std::thread(&Game::FlipSingleTile, _self, std::move(tile), sleepMultiplier));
             sleepMultiplier++;
         }
 
+        // Reset the sleep multiplier for a new row/column
         sleepMultiplier = 0;
         for (int i = coords.x + 1; i < conn.x; i++)
         {
             SDL_Point tile{i, coords.y};
-            threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(tile), sleepMultiplier));
+            threads.emplace_back(std::thread(&Game::FlipSingleTile, _self, std::move(tile), sleepMultiplier));
             sleepMultiplier++;
         }
 
+        // Reset the sleep multiplier for a new row/column
         sleepMultiplier = 0;
         for (int i = coords.y + 1; i < conn.y; i++)
         {
             SDL_Point tile{coords.x, i};
-            threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(tile), sleepMultiplier));
+            threads.emplace_back(std::thread(&Game::FlipSingleTile, _self, std::move(tile), sleepMultiplier));
             sleepMultiplier++;
         }
     }

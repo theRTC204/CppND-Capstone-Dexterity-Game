@@ -33,6 +33,8 @@ private:
     const std::size_t _gridWidth;
     const std::size_t _gridHeight;
 
+    std::shared_ptr<Game> _self;
+
     std::vector<SDL_Point> FindBoundingTiles(SDL_Point const &root);
     bool CheckWinCondition();
     void Update();
