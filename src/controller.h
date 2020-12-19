@@ -9,11 +9,11 @@ class Game;
 class Controller
 {
 public:
-    void HandleInput(bool &running, Player &player, Game &game) const;
+    void HandleInput(bool &running, Player &player, std::shared_ptr<Game> game) const;
 
 private:
     void ChangeDirection(Player &player, Player::Direction input) const;
-    void Activate(Player &player, Game &game) const;
+    void Activate(Player &player, std::shared_ptr<Game> game) const;
 };
 
 #endif
