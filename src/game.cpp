@@ -1,8 +1,8 @@
 #include "game.h"
 
 Game::Game(const std::size_t gridWidth, const std::size_t gridHeight) :
-    player(gridWidth, gridHeight),
     gameBoard(std::make_shared<GameBoard>(gridWidth, gridHeight)),
+    player(gridWidth, gridHeight),
     _gridWidth(gridWidth),
     _gridHeight(gridHeight),
     _self(this) { }
@@ -123,9 +123,9 @@ std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
 {
     std::vector<SDL_Point> connections;
 
-    for (int i = root.x - 1; i >= 1; i--)
+    for (std::size_t i = root.x - 1; i >= 1; i--)
     {
-        SDL_Point tile{i, root.y};
+        SDL_Point tile{(int)i, root.y};
         int tileState = gameBoard->GetTileState(tile);
 
         if (tileState == -1)
@@ -137,9 +137,9 @@ std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
         }
     }
 
-    for (int i = root.y - 1; i >= 1; i--)
+    for (std::size_t i = root.y - 1; i >= 1; i--)
     {
-        SDL_Point tile{root.x, i};
+        SDL_Point tile{root.x, (int)i};
         int tileState = gameBoard->GetTileState(tile);
 
         if (tileState == -1)
@@ -151,9 +151,9 @@ std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
         }
     }
 
-    for (int i = root.x + 1; i <= _gridWidth - 1; i++)
+    for (std::size_t i = root.x + 1; i <= _gridWidth - 1; i++)
     {
-        SDL_Point tile{i, root.y};
+        SDL_Point tile{(int)i, root.y};
         int tileState = gameBoard->GetTileState(tile);
 
         if (tileState == -1)
@@ -165,9 +165,9 @@ std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
         }
     }
 
-    for (int i = root.y + 1; i <= _gridHeight - 1; i++)
+    for (std::size_t i = root.y + 1; i <= _gridHeight - 1; i++)
     {
-        SDL_Point tile{root.x, i};
+        SDL_Point tile{root.x, (int)i};
         int tileState = gameBoard->GetTileState(tile);
 
         if (tileState == -1)
@@ -184,11 +184,11 @@ std::vector<SDL_Point> Game::FindBoundingTiles(SDL_Point const &root)
 
 bool Game::CheckWinCondition()
 {
-    for (int r = 1; r < _gridHeight - 2; r++)
+    for (std::size_t r = 1; r < _gridHeight - 2; r++)
     {
-        for (int c = 1; c < _gridWidth - 2; c++)
+        for (std::size_t c = 1; c < _gridWidth - 2; c++)
         {
-            SDL_Point tile{r, c};
+            SDL_Point tile{(int)r, (int)c};
             if (gameBoard->GetTileState(tile) == 0) {
                 return false;
             }

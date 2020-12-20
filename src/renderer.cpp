@@ -27,7 +27,7 @@ Renderer::Renderer(
         _screenHeight,
         SDL_WINDOW_SHOWN);
     
-    if (nullptr == window);
+    if (nullptr == window)
     {
         printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
     }
@@ -57,9 +57,9 @@ void Renderer::Render(Player const player, std::shared_ptr<Game> const game)
 
     // Render game board
     const std::vector<std::vector<int>> board = game->gameBoard->GetBoard();
-    for (int r = 1; r < board.size() - 2; r++)
+    for (std::size_t r = 1; r < board.size() - 2; r++)
     {
-        for (int c = 1; c < board[r].size() - 2; c++)
+        for (std::size_t c = 1; c < board[r].size() - 2; c++)
         {
             if (game->playerWins)
             {

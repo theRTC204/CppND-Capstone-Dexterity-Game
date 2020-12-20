@@ -10,10 +10,10 @@ public:
 
     // TODO: Determine how to constrain Player to gameBoard bounds
     Player(int gridWidth, int gridHeight) :
-        _gridWidth(gridWidth),
-        _gridHeight(gridHeight),
         posX(gridWidth / 2),
-        posY(gridHeight / 2) {}
+        posY(gridHeight / 2),
+        _gridWidth(gridWidth),
+        _gridHeight(gridHeight) {}
 
     void Update();
     void SetDirection(Direction direction);
