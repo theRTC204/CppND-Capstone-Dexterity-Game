@@ -1,6 +1,20 @@
 #include <memory>
 #include "player.h"
 
+Player::Player(int gridWidth, int gridHeight) :
+    posX(gridWidth / 2),
+    posY(gridHeight / 2),
+    _gridWidth(gridWidth),
+    _gridHeight(gridHeight)
+{
+    SDL_Point startingCell
+    {
+        static_cast<int>(posX),
+        static_cast<int>(posY)
+    };
+    UpdateActiveTile(std::move(startingCell));
+}
+
 void Player::Update()
 {
     // Capture the Player position before update

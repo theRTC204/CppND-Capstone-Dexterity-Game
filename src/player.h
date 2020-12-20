@@ -9,11 +9,7 @@ public:
     enum class Direction { kNull, kUp, kDown, kLeft, kRight };
 
     // TODO: Determine how to constrain Player to gameBoard bounds
-    Player(int gridWidth, int gridHeight) :
-        posX(gridWidth / 2),
-        posY(gridHeight / 2),
-        _gridWidth(gridWidth),
-        _gridHeight(gridHeight) {}
+    Player(int gridWidth, int gridHeight);
 
     void Update();
     void SetDirection(Direction direction);
