@@ -4,8 +4,7 @@ Game::Game(const std::size_t gridWidth, const std::size_t gridHeight) :
     gameBoard(std::make_shared<GameBoard>(gridWidth, gridHeight)),
     player(gridWidth, gridHeight),
     _gridWidth(gridWidth),
-    _gridHeight(gridHeight),
-    _self(this) { }
+    _gridHeight(gridHeight) { }
 
 void Game::Run(Controller const &controller, Renderer &renderer, std::size_t targetFrameDuration)
 {
@@ -21,9 +20,9 @@ void Game::Run(Controller const &controller, Renderer &renderer, std::size_t tar
         frameStart = SDL_GetTicks();
 
         // Input, Update, Render - the main game loop.
-        controller.HandleInput(running, player, _self);
+        controller.HandleInput(running, player, (*this));
         Update();
-        renderer.Render(player, _self);
+        renderer.Render(player, (*this));
 
         frameEnd = SDL_GetTicks();
 
@@ -71,7 +70,7 @@ void Game::FlipChainedTiles(SDL_Point &&coords)
     std::vector<std::thread> threads;
     
     SDL_Point current = SDL_Point(coords);
-    threads.emplace_back(std::thread(&Game::FlipSingleTile, _self, std::move(current), sleepMultiplier));
+    threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(current), sleepMultiplier));
 
     std::vector<SDL_Point> connections = FindBoundingTiles(coords);
     for (auto conn : connections)
@@ -81,7 +80,7 @@ void Game::FlipChainedTiles(SDL_Point &&coords)
         for (int i = coords.x - 1; i > conn.x; i--)
         {
             SDL_Point tile{i, coords.y};
-            threads.emplace_back(std::thread(&Game::FlipSingleTile, _self, std::move(tile), sleepMultiplier));
+            threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(tile), sleepMultiplier));
             sleepMultiplier++;
         }
 
@@ -90,7 +89,7 @@ void Game::FlipChainedTiles(SDL_Point &&coords)
         for (int i = coords.y - 1; i > conn.y; i--)
         {
             SDL_Point tile{coords.x, i};
-            threads.emplace_back(std::thread(&Game::FlipSingleTile, _self, std::move(tile), sleepMultiplier));
+            threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(tile), sleepMultiplier));
             sleepMultiplier++;
         }
 
@@ -99,7 +98,7 @@ void Game::FlipChainedTiles(SDL_Point &&coords)
         for (int i = coords.x + 1; i < conn.x; i++)
         {
             SDL_Point tile{i, coords.y};
-            threads.emplace_back(std::thread(&Game::FlipSingleTile, _self, std::move(tile), sleepMultiplier));
+            threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(tile), sleepMultiplier));
             sleepMultiplier++;
         }
 
@@ -108,7 +107,7 @@ void Game::FlipChainedTiles(SDL_Point &&coords)
         for (int i = coords.y + 1; i < conn.y; i++)
         {
             SDL_Point tile{coords.x, i};
-            threads.emplace_back(std::thread(&Game::FlipSingleTile, _self, std::move(tile), sleepMultiplier));
+            threads.emplace_back(std::thread(&Game::FlipSingleTile, this, std::move(tile), sleepMultiplier));
             sleepMultiplier++;
         }
     }

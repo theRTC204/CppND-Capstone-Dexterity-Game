@@ -8,13 +8,13 @@ void Controller::ChangeDirection(Player &player, Player::Direction input) const
     player.SetDirection(input);
 }
 
-void Controller::Activate(Player &player, std::shared_ptr<Game> game) const
+void Controller::Activate(Player &player, Game &game) const
 {
     SDL_Point coords{player.activeTile.x, player.activeTile.y};
-    game->FlipChainedTiles(std::move(coords));
+    game.FlipChainedTiles(std::move(coords));
 }
 
-void Controller::HandleInput(bool &running, Player &player, std::shared_ptr<Game> game) const
+void Controller::HandleInput(bool &running, Player &player, Game &game) const
 {
     SDL_Event e;
     while (SDL_PollEvent(&e))

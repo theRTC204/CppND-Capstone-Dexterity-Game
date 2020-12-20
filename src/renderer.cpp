@@ -45,7 +45,7 @@ Renderer::~Renderer()
     SDL_Quit();
 }
 
-void Renderer::Render(Player const player, std::shared_ptr<Game> const game)
+void Renderer::Render(Player const player, Game const &game)
 {
     SDL_Rect block;
     block.w = _screenWidth / _gridWidth;
@@ -56,12 +56,12 @@ void Renderer::Render(Player const player, std::shared_ptr<Game> const game)
     SDL_RenderClear(renderer);
 
     // Render game board
-    const std::vector<std::vector<int>> board = game->gameBoard->GetBoard();
+    const std::vector<std::vector<int>> board = game.gameBoard->GetBoard();
     for (std::size_t r = 1; r < board.size() - 2; r++)
     {
         for (std::size_t c = 1; c < board[r].size() - 2; c++)
         {
-            if (game->playerWins)
+            if (game.playerWins)
             {
                 SDL_SetRenderDrawColor(renderer, 0x84, 0xCE, 0x00, 0xFF);
             }

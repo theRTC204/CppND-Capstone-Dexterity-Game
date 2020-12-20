@@ -20,7 +20,7 @@ public:
     );
     ~Renderer();
 
-    void Render(Player const player, std::shared_ptr<Game> const game);
+    void Render(Player const player, Game const &game);
     void UpdateWindowTitle(int fps);
 
 private:
