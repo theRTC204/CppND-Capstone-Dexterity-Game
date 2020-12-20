@@ -45,6 +45,9 @@ void Player::UpdatePosition()
         case Direction::kRight:
             posX += speed;
             break;
+        case Direction::kNull:
+        default:
+            break;
     }
 }
 
